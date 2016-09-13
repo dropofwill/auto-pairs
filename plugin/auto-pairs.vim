@@ -262,7 +262,7 @@ function! AutoPairsInsert(key)
 
   " Ignore auto close ' if follows a word
   " MUST after closed check. 'hello|'
-  if a:key == "'" && prev_char =~ '\v\w'
+  if a:key == "'" && prev_char =~? '\v\w'
     return a:key
   end
 
@@ -292,10 +292,10 @@ function! AutoPairsInsert(key)
   let quotes_num = 0
   " Ignore comment line for vim file
   if &filetype == 'vim' && a:key == '"'
-    if before =~ '^\s*$'
+    if before =~? '^\s*$'
       return a:key
     end
-    if before =~ '^\s*"'
+    if before =~? '^\s*"'
       let quotes_num = -1
     end
   end
@@ -382,7 +382,7 @@ function! AutoPairsDelete()
     elseif match(line, '^\s*$', col('.')-1) != -1
       " Delete (|__\n___)
       let nline = getline(line('.')+1)
-      if nline =~ '^\s*'.close
+      if nline =~? '^\s*'.close
         if &filetype == 'vim' && prev_char == '"'
           " Keep next line's comment
           return "\<BS>"
@@ -435,7 +435,7 @@ function! AutoPairsFastWrap()
   let at_end = col('.') >= col('$') - 1
   normal! x
   " Skip blank
-  if next_char =~ '\v\s' || at_end
+  if next_char =~? '\v\s' || at_end
     call search('\v\S', 'W')
     let line = getline('.')
     let next_char = line[col('.')-1]
@@ -660,10 +660,10 @@ function! AutoPairsTryInit()
       else
         let old_cr = s:ExpandMap(old_cr)
         " old_cr contain (, I guess the old cr is in expr mode
-        let is_expr = old_cr =~ '\V(' && toupper(old_cr) !~ '\V<C-R>'
+        let is_expr = old_cr =~? '\V(' && toupper(old_cr) !~ '\V<C-R>'
 
         " The old_cr start with " it must be in expr mode
-        let is_expr = is_expr || old_cr =~ '\v^"'
+        let is_expr = is_expr || old_cr =~? '\v^"'
         let wrapper_name = '<SID>AutoPairsOldCRWrapper'
       end
     end
