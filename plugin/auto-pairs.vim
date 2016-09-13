@@ -103,6 +103,11 @@ if !exists('g:AutoPairsNeverJumpLines')
   let g:AutoPairsNeverJumpLines = 0
 endif
 
+" Auto Newline after character
+if !exists('g:AutoPairsAutoNewlineAfter')
+  let g:AutoPairsAutoNewlineAfter = []
+endif
+
 " Never Skip, but skip quotes (auto if NeverSkip=0)
 if !exists('g:AutoPairsSkipQuotes')
   let g:AutoPairsSkipQuotes = 0
@@ -328,6 +333,12 @@ function! AutoPairsInsert(key)
     return a:key
   end
 
+  if index(g:AutoPairsAutoNewlineAfter, open) >= 0
+    return open.close.s:Left."\<CR>\<C-R>=AutoPairsReturn()\<CR>"
+  else
+    return open.close.s:Left
+  endif
+
   return open.close.s:Left
 endfunction
 
@@ -467,7 +478,7 @@ function! AutoPairsMap(key)
   end
   let escaped_key = substitute(key, "'", "''", 'g')
   " use expr will cause search() doesn't work
-  execute 'inoremap <buffer> '.g:AutoPairsSilence.' '.key." <C-R>=AutoPairsInsert('".escaped_key."')<CR>"
+    execute 'inoremap <buffer> '.g:AutoPairsSilence.' '.key." <C-R>=AutoPairsInsert('".escaped_key."')<CR>"
 endfunction
 
 function! AutoPairsToggle()
