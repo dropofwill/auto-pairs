@@ -298,6 +298,12 @@ Options
 
         Never jump to another line
 
+*    g:AutoPairsTriggerAbbrev
+
+        Default: 1
+
+        Trigger abbreviations as expected
+
 *   g:AutoPairsAutoNewlineAfter
 
         Default: []
